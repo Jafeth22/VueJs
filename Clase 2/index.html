@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clase 2</title>
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
+</head>
+
+<body>
+    <h1>Esta es la clase #2</h1>
+    <div id="appClase2" class="container mt-5">
+        <!--Esta es la forma en la que se agregan clases con VUE, si con varias se
+        se hace en forma de ARRAY, de lo contrario, solo se escribe la clase-->
+        <div :class="['p-3', 'text-white', fondo]">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto vel, libero veritatis corrupti
+                voluptatibus beatae necessitatibus consequatur praesentium unde. Reiciendis molestias sit incidunt
+                repellat, quas qui voluptates corporis labore. Totam?</p>
+        </div>
+        <input type="text" class="form-control my-3" v-model="fondo">
+        <!--El color se muestra cuando "color" es verdadero-->
+        <div class="text-white p-3" :class="{'bg-info': color, 'bg-success': !color}">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto vel, libero veritatis corrupti
+                voluptatibus beatae necessitatibus consequatur praesentium unde. Reiciendis molestias sit incidunt
+                repellat, quas qui voluptates corporis labore. Totam?</p>
+        </div>
+        <button class="btn btn-primary my-3" @click="color = !color">Cambia color</button>
+    </div>
+
+    <script src="JS/vue.js"></script>
+    <script src="JS/jquery-3.3.1.slim.min.js"></script>
+    <script src="JS/popper.min.js"></script>
+    <script src="JS/bootstrap.min.js"></script>
+    <script src="JS/estilos.js"></script>
+</body>
+
+</html>

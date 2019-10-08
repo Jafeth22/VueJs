@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clase 5</title>
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
+    <style>
+        .reves{ 
+            text-align:right;
+        }
+    </style>
+</head>
+
+<body  class="container mt-2">
+    <h1>Esta es la clase #5</h1>
+    <div id="app">
+        <h2>{{saludo}}</h2>
+        <button class="btn btn-primary" @click="saludo = 'Hola mundo'">Hola mundo</button>
+        <button class="btn btn-success" @click="saludo = 'Cambio Saludo'">Cambio Saludo</button>
+        <button class="btn btn-danger" @click="destruir()">Destruir Instancia</button>
+    </div>
+
+    <script src="JS/vue.js"></script>
+    <script src="JS/jquery-3.3.1.slim.min.js"></script>
+    <script src="JS/popper.min.js"></script>
+    <script src="JS/bootstrap.min.js"></script>
+    <script src="JS/estilos.js"></script>
+</body>
+
+</html>

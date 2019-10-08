@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inicio</title>
+</head>
+
+<body>
+    <h3>Este es el inicio de la página</h3>
+    <div id="app">
+        <h1>Esto es de Vue</h1>
+        <h1>{{titulo}}</h1>
+        <!--Con el keyup.enter: Es para que pueda funcionar cuando se da enter-->
+        <input type="text" id="txtNuevaFruta" v-model="nuevaFruta" @keyup.enter="agregar">
+        <!--@click = v-on:click-->
+        <button @click="agregar">Agregar</button>
+        <ul>
+            <!--De esta forma se puede hacer un FOR con VUE-->
+            <li type="circle" v-for='data of frutas'>
+                <input type="text" v-model.number="data.cant" disabled="true">
+                <button id="btnSumar" @click="data.cant++">+</button>
+                <button id="btnRestar" @click="data.cant--" @click="banderaBtn(this)">-</button>
+                {{data.nombre}}
+                <span v-if=" data.cant <=0"> *NO HAY EN ALMACENAMIENTO </span>
+                <span v-else> - {{data.cant}}</span>
+            </li>
+            <!--Al llamarse la función, no es necesario poner los ()-->
+            <h3>Total de frutas: {{sumTotalFrutas}}</h3>
+        </ul>
+
+
+
+        <ul>
+            <li type="square" v-for='data of personas'>{{data.nombre}} {{data.ape}}</li>
+        </ul>
+        <!--v-model: Conexión directa de la variable el JS-->
+        <select id="cboSelect" v-model="persona" prompt="Seleccione una opción">
+            <option value="" disabled>Select one--</option>
+            <option v-for="p in personas" v-bind:value="p.value">
+                {{p.nombre}}
+            </option>
+        </select>
+        <br>
+        <span>Hola, este el id = {{persona}}</span>
+    </div>
+    <script src="JavaScript/vue.js"></script>
+    <script src="JavaScript/estilos.js"></script>
+</body>
+
+</html>
