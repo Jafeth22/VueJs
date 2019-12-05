@@ -20,6 +20,112 @@
     <script src="JS/sweetalert2.all.min.js"></script>
     <script src="JS/vue.js"></script>
     <script src="JS/vuex.js"></script>
-    <script src="JS/estilos.js"></script>
+    <script>
+        Vue.component('titulo', {
+            template: //html
+            `
+            <div>
+                <!--Así se llama los métodos del VUEX-->
+                <button class="btn btn-danger" @click="$store.commit('restar')">-</button>
+                <!--De esta forma puedo llamar a las variables de VUEX-->
+                <h4>Número Padre: {{$store.state.numero}}, DIRECTO</h4>
+                <!--h4>Número Hijo: {{$store.state.numero}}</h4-->
+                <h4>Número computed: {{numeroComputed}}, usando COMPUTED</h4>
+                <hijo></hijo>
+                <nieto></nieto>
+            </div>
+            `,
+            computed:{
+                numeroComputed(){
+                    return store.state.numero
+                }
+            }
+        });
+
+        Vue.component('hijo', {
+            template: //html
+            `
+            <div>
+                <button class="btn btn-primary" @click="$store.commit('aumentar')">+</button>
+                <!--El $ solamente se usa cuando se escribe directamente en el HTML-->
+                <!--h4>Número Hijo: {{$store.state.numero}}</h4-->
+                <h4>Número Hijo: {{numero}}, usando mapState y COMPUTED</h4>
+            </div>
+            `,
+            computed: {
+                /**Vuex = Librería que se está importando de forma directa del script que se había descargado
+                 *Se va a llamar todo lo que se va utilizar dentro de los componentes
+                 *Lo que está dentro del State, se mapea solo, por lo que al usarlo dentro de se detecta automáticamente
+                 */
+                ...Vuex.mapState([
+                    'numero' //Lo que está dentro de State, en el VUEX, y siempre va entre ''
+                ])
+            }
+        });
+
+        Vue.component('nieto', {
+            template: //html
+            `
+            <div>
+                <button class="btn btn-success" @click="multiplicarN(5)">*</button>
+                <button class="btn btn-warning" @click="dividir2">/</button>
+                <!--El $ solamente se usa cuando se escribe directamente en el HTML-->
+                <!--h4>Número Hijo: {{$store.state.numero}}</h4-->
+                <h4>Número Hijo: {{numero}}, usando mapState, COMPUTED y methods</h4>
+            </div>
+            `,
+            computed: {
+                ...Vuex.mapState([
+                    'numero'
+                ])
+            },
+            methods: {
+                ...Vuex.mapMutations ([
+                    'multiplicarN'
+                    , 'dividir2' //En caso que se necesite enviarle parámetros, solamente se hará donde se está usando
+                ])
+            }
+        });
+
+        /**Instacia para poder usar VUEX, se va a almancenar en la variable declarada 
+         * Esto sirve para poder usarlo en todos los componentes de VUE, es como una variable global
+        */
+        const store = new Vuex.Store({
+            state: {
+                numero: 10
+                , cursos: []
+            },
+            mutations: {
+                aumentar(state){
+                    state.numero++;
+                },
+                restar(){
+                    this.state.numero -= 2;
+                },
+                multiplicarN(state, N){
+                    this.state.numero *= N;
+                },
+                dividir2(){
+                    this.state.numero /= 2;
+                }
+                //llenarCursos
+            },
+            actions: {
+                obtenerCursos: async function(){
+                    const data = await fetch('datos.json'); //fetch(URL para obtener la información)
+                    const cursos = await data.json(); //data.json() = Para que retorne en formato JSON(objetos)
+                }
+            }
+        })
+
+        const app = new Vue({
+            el: "#app",
+            store, //store: store, es lo mismo que escribirlo solo una vez, además, es la forma para poder usar la variable de VUEX
+            data:{
+                
+            }
+        })
+
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ const app = new Vue({
      * Se ejecuta cuando carga el JS
      */
     created(){
-        let datosLS = JSON.parse(localStorage.getItem('gym-vue'));
+        let datosLS = JSON.parse(localStorage.getItem('gym-vue')); //Para convertir a JSON
         if (datosLS == null) {
             this.tareas = [];
         }else{
@@ -24,7 +24,7 @@ const app = new Vue({
                     estado: false
                 });
                 this.nuevaTarea = '';
-                localStorage.setItem('gym-vue', JSON.stringify(this.tareas));
+                localStorage.setItem('gym-vue', JSON.stringify(this.tareas)); //Para convertir a String
             }
         },
         cambioColor(estado){
