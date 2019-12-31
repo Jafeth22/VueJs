@@ -67,22 +67,47 @@
             template: //html
             `
             <div>
-                <button class="btn btn-success" @click="multiplicarN(5)">*</button>
+                <button class="btn btn-success" @click="multiplicarN(2)">*</button>
                 <button class="btn btn-warning" @click="dividir2">/</button>
                 <!--El $ solamente se usa cuando se escribe directamente en el HTML-->
                 <!--h4>Número Hijo: {{$store.state.numero}}</h4-->
-                <h4>Número Hijo: {{numero}}, usando mapState, COMPUTED y methods</h4>
+                <h4>Número Nieto: {{numero}}, usando mapState, COMPUTED y methods</h4>
+                <!--De esta forma se muestra la información de un MAP-->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr class="thead-light">
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Identificador</th>
+                        </tr>
+                        <tr v-for="(dato, index) of cursos">
+                            <td>{{index+1}}</td>
+                            <td>{{dato.nombre}}</td>
+                            <td>{{dato.id}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             `,
+            mounted(){
+                //Así llamo a una ACTION, una vez mapeada
+                this.obtenerCursos();
+            },
             computed: {
+                //Se mapean todas los STATE que se necesiten y también se deben de mapear en una MUTATION o ACTION, según se necesite 
                 ...Vuex.mapState([
                     'numero'
+                    , 'cursos'
                 ])
             },
             methods: {
+                //Al igual que las MUTATIONS, también se puede mapear las ACTIONS
                 ...Vuex.mapMutations ([
                     'multiplicarN'
                     , 'dividir2' //En caso que se necesite enviarle parámetros, solamente se hará donde se está usando
+                ]),
+                ...Vuex.mapActions ([
+                    'obtenerCursos' 
                 ])
             }
         });
@@ -107,13 +132,17 @@
                 },
                 dividir2(){
                     this.state.numero /= 2;
+                }, 
+                llenarCursos(state, cursosAccion){
+                    state.cursos = cursosAccion;
                 }
-                //llenarCursos
             },
             actions: {
-                obtenerCursos: async function(){
-                    const data = await fetch('datos.json'); //fetch(URL para obtener la información)
-                    const cursos = await data.json(); //data.json() = Para que retorne en formato JSON(objetos)
+                //En una ACTION, se deberá de enviar siempre por parámetro un COMMIT = a un Objeto
+                obtenerCursos: async function({commit}){
+                    let data = await fetch('JS/datos.json'); //fetch(URL para obtener la información)
+                    let cursos = await data.json(); //data.json() = Para que retorne en formato JSON
+                    commit('llenarCursos', cursos); //Forma en la que llama una mutación y le envía parámetros
                 }
             }
         })
