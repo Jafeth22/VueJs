@@ -1,29 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
     <title>Conexion PHP</title>
+    <style>
+        .espacio {
+            height: 80px;
+        }
+
+        .transparente {
+            background-color: transparent;
+            border: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <h2 id='prueba'></h2>
-    
+    <div id="app">
+        <div class="table-responsive" class="espacio">
+            <table class="table table-striped table-hover">
+                <h4>Hola mundo</h4>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>1° Apellido</th>
+                    <th>2° Apellido</th>
+                    <th>Celular</th>
+                </tr>
+                <tr v-for="(data, index) in arrayPersonas" :id="'fila'+data.idPersona" :class="'clase'+data.idPersona">
+                    <td>{{index+1}}</td>
+                    <td v-on:click="seleccionTabla(data)">
+                        <input type="text" v-bind:value="data.nombre" class="transparente">
+                    </td>
+                    <td v-on:click="seleccionTabla(data)">
+                        <input type="text" v-bind:value="data.apellido1" class="transparente">
+                    </td>
+                    <td v-on:click="seleccionTabla(data)">
+                        <input type="text" v-bind:value="data.apellido2" class="transparente">
+                    </td>
+                    <td v-on:click="seleccionTabla(data)">
+                        <input type="text" v-bind:value="data.celular" class="transparente">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="mx-3">
+            <select v-model="selectPersona">
+                <option value="">Seleccione una opción</option>
+                <option v-for="(data, index) in arrayPersonas" :value="data.idPersona">
+                    {{data.nombre}} {{data.apellido1}} {{data.apellido2}}
+                </option>
+            </select>
+        </div>
+
+        <div class="mx-3">
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>Tabla</th>
+                    <th>Select</th>
+                </tr>
+                <tr>
+                    <td>{{tablaPersona}}</td>
+                    <td>{{nombrePersona}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <script src="jquery-3.4.1.min.js"></script>
+    <script src="JS/jquery-3.3.1.slim.min.js"></script>
+    <script src="JS/popper.min.js"></script>
+    <script src="JS/bootstrap.min.js"></script>
+    <script src="vue.js"></script>
     <script>
-        $( document ).ready(function() {
-            document.getElementById("prueba").innerHTML = 'Inicio';
-            $.ajax({
-                //dataType: "json",
-                method: 'POST', // or GET
-                url: '..\\controller.php',
-                data: {sp: 'Muestra_Personas'},
-                success: function(data) {
-                    document.getElementById("prueba").innerHTML = data; 
+        var app = new Vue({
+            el: "#app",
+            data: {
+                arrayPersonas: [],
+                selectPersona: "",
+                nombreCompleto: [],
+                tablaPersona: "",
+                datosPersona: {
+                    nombre:""
+                    , apellido1: ""
+                    , apellido2: ""
+                    , cedula: ""
                 }
-            });
-            document.getElementById("prueba").innerHTML = 'No entró';
+            },
+            computed: {
+                nombrePersona() {
+                    if (this.selectPersona != "") {
+                        let persona = this.arrayPersonas[this.selectPersona - 1]
+                        return persona = `${persona.nombre} ${persona.apellido2} ${persona.apellido2}`;
+                    }
+                },
+            },
+            mounted() {
+                this.cargaPersonas();
+            },
+            methods: {
+                cargaPersonas() {
+                    let self = this;
+                    $.ajax({
+                        //dataType: "json",
+                        method: 'POST', // or GET
+                        url: '..\\controller.php',
+                        data: {
+                            sp: 'Muestra_Personas'
+                        },
+                        success: function (data) {
+                            self.arrayPersonas = JSON.parse(data);
+                        }
+                    });
+                },
+                seleccionTabla(data) {
+                    this.tablaPersona = `${data.nombre} ${data.apellido2} ${data.apellido2}`;
+                }
+            }
         });
     </script>
 </body>
+
 </html>

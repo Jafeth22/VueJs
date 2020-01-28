@@ -13,7 +13,8 @@
         <h1>Vuex, clase 8</h1>
         <titulo></titulo>
     </div>
-    
+
+    <script src="jquery-3.4.1.min.js"></script>
     <script src="JS/jquery-3.3.1.slim.min.js"></script>
     <script src="JS/popper.min.js"></script>
     <script src="JS/bootstrap.min.js"></script>
@@ -92,6 +93,7 @@
             mounted(){
                 //Así llamo a una ACTION, una vez mapeada
                 this.obtenerCursos();
+                this.obtenerCursos2();
             },
             computed: {
                 //Se mapean todas los STATE que se necesiten y también se deben de mapear en una MUTATION o ACTION, según se necesite 
@@ -107,7 +109,8 @@
                     , 'dividir2' //En caso que se necesite enviarle parámetros, solamente se hará donde se está usando
                 ]),
                 ...Vuex.mapActions ([
-                    'obtenerCursos' 
+                    'obtenerCursos'
+                    , 'obtenerCursos2'
                 ])
             }
         });
@@ -142,10 +145,23 @@
                 obtenerCursos: async function({commit}){
                     let data = await fetch('JS/datos.json'); //fetch(URL para obtener la información)
                     let cursos = await data.json(); //data.json() = Para que retorne en formato JSON
+                    let pruebaDatos = null;
                     commit('llenarCursos', cursos); //Forma en la que llama una mutación y le envía parámetros
+                }, 
+                obtenerCursos2: async function({commit, funcion}){
+                    $.ajax({
+                        //dataType: "json",
+                        method: 'POST', // or GET
+                        url: '..\\controller.php',
+                        data: {sp: funcion},
+                        success: function(data) {
+                            let pruebaDatos = data;
+                            commit('llenarCursos', pruebaDatos); //Forma en la que llama una mutación y le envía parámetros
+                        }
+                    });
                 }
             }
-        })
+        });
 
         const app = new Vue({
             el: "#app",
@@ -153,7 +169,7 @@
             data:{
                 
             }
-        })
+        });
 
     </script>
 </body>
